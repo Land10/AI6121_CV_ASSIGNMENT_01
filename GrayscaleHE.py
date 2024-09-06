@@ -11,11 +11,7 @@ class GrayscaleHE(object):
         self.OriginalImg = cv2.imread(os.path.join(img_path, img_file))
         self.Histogram = np.zeros((1, 256), dtype=np.intp)
         self.NewHistogram = np.zeros((1, 256), dtype=np.intp)
-<<<<<<< HEAD
         self.Cumulative_distribution = np.zeros((1, 256), dtype=np.float64)
-=======
-        self.Cumulative_distribution = np.zeros((1, 256), dtype=np.cfloat)
->>>>>>> df0ec576b6eba185744db8af3c19ef23d30f6e57
         matplotlib.rcParams['font.sans-serif'] = ['SimHei']
         matplotlib.rcParams['axes.unicode_minus'] = False
 
@@ -48,10 +44,7 @@ class GrayscaleHE(object):
         os.makedirs(os.path.join("results", "GrayscaleHE", "origin_histogram"), exist_ok=True)
         plt.savefig(os.path.join("results", "GrayscaleHE", "origin_histogram", self.img_file))
         x.resize((height, width))
-<<<<<<< HEAD
         plt.close()
-=======
->>>>>>> df0ec576b6eba185744db8af3c19ef23d30f6e57
 
     def equalization(self):
         """
@@ -101,8 +94,5 @@ class GrayscaleHE(object):
         os.makedirs(os.path.join("results", "GrayscaleHE", "new_histogram"), exist_ok=True)
         plt.savefig(os.path.join("results", "GrayscaleHE", "new_histogram", self.img_file))
         self.NewImg.resize((height, width))
-<<<<<<< HEAD
         plt.close()
-=======
->>>>>>> df0ec576b6eba185744db8af3c19ef23d30f6e57
         
