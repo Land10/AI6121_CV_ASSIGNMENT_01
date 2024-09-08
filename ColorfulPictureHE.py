@@ -49,28 +49,30 @@ class ColorPictureHE(object):
         height = self.OriginalImg.shape[0]
         width = self.OriginalImg.shape[1]
         N = height * width
-        for i in range(256):
-            if i == 0:
-                self.Cumulative_distribution[0][i] = self.Histogram[0][i] / N
-                self.Cumulative_distribution[1][i] = self.Histogram[1][i] / N
-                self.Cumulative_distribution[2][i] = self.Histogram[2][i] / N
-            elif i == 255:
-                self.Cumulative_distribution[0][i] = 1.0
-                self.Cumulative_distribution[1][i] = 1.0
-                self.Cumulative_distribution[2][i] = 1.0
-            else:
-                self.Cumulative_distribution[0][i] = self.Histogram[0][i] / N + \
-                                                     self.Cumulative_distribution[0][i - 1]
-                self.Cumulative_distribution[1][i] = self.Histogram[1][i] / N + \
-                                                     self.Cumulative_distribution[1][i - 1]
-                self.Cumulative_distribution[2][i] = self.Histogram[2][i] / N + \
-                                                     self.Cumulative_distribution[2][i - 1]
-
-        self.Cumulative_distribution = self.Cumulative_distribution * 255
-        # 绘制新图像
-        self.NewImg = self.OriginalImg.copy()
-
-        self.Cumulative_distribution = self.Cumulative_distribution.astype(np.intp)
+        if self.channel == "WeightedRGB" or self.channel == "SharedRGB":
+            pass
+        else:
+            for i in range(256):
+                if i == 0:
+                    self.Cumulative_distribution[0][i] = self.Histogram[0][i] / N
+                    self.Cumulative_distribution[1][i] = self.Histogram[1][i] / N
+                    self.Cumulative_distribution[2][i] = self.Histogram[2][i] / N
+                elif i == 255:
+                    self.Cumulative_distribution[0][i] = 1.0
+                    self.Cumulative_distribution[1][i] = 1.0
+                    self.Cumulative_distribution[2][i] = 1.0
+                else:
+                    self.Cumulative_distribution[0][i] = self.Histogram[0][i] / N + \
+                                                         self.Cumulative_distribution[0][i - 1]
+                    self.Cumulative_distribution[1][i] = self.Histogram[1][i] / N + \
+                                                         self.Cumulative_distribution[1][i - 1]
+                    self.Cumulative_distribution[2][i] = self.Histogram[2][i] / N + \
+                                                         self.Cumulative_distribution[2][i - 1]
+    
+            self.Cumulative_distribution = self.Cumulative_distribution * 255
+            self.NewImg = self.OriginalImg.copy()
+    
+            self.Cumulative_distribution = self.Cumulative_distribution.astype(np.intp)
 
         if self.channel == "RGB":
             for row in range(height):
@@ -122,7 +124,6 @@ class ColorPictureHE(object):
                                                          self.Cumulative_distribution[0][i - 1]
 
             self.Cumulative_distribution = self.Cumulative_distribution * 255 / 3
-            # 绘制新图像
             self.NewImg = self.OriginalImg.copy()
 
             self.Cumulative_distribution = self.Cumulative_distribution.astype(np.intp)
