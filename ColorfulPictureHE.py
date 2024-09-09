@@ -45,6 +45,36 @@ class ColorPictureHE(object):
         plt.savefig(os.path.join("results", f"{self.channel}ChannelHE", "origin_histogram", self.img_file))
         plt.close()
 
+    def valification(self):
+        """
+        调用opencv的函数验证histogram_equalization的效果
+        return: None
+        """
+        valification_img = self.OriginalImg.copy()
+        hsv = cv2.cvtColor(valification_img, cv2.COLOR_RGB2HSV)
+        channels = cv2.split(hsv)
+        cv2.equalizeHist(channels[2], channels[2])
+        cv2.merge(channels, hsv)
+        # 将hsv图像转换回RGB图像
+        cv2.cvtColor(hsv, cv2.COLOR_HSV2RGB, valification_img)
+        # 保存验证图片
+        os.makedirs(os.path.join("results", "Validation", "validation_images"), exist_ok=True)
+        cv2.imwrite(os.path.join("results", "Validation", "validation_images", self.img_file), valification_img)
+        # 绘制验证图片的直方图
+        plt.figure()
+        plt.title('cv2.equalizeHist image')
+        plt.subplot(3, 1, 1)
+        plt.hist(valification_img[:,:,0].flatten(), bins=256, color='red')
+        plt.subplot(3, 1, 2)
+        plt.hist(valification_img[:,:,1].flatten(), bins=256, color='green')
+        
+        plt.ylabel('frequency')
+        plt.subplot(3, 1, 3)
+        plt.hist(valification_img[:,:,2].flatten(), bins=256, color='blue')
+        plt.xlabel('gray level')
+        os.makedirs(os.path.join("results", "Validation", "validation_histogram"), exist_ok=True)
+        plt.savefig(os.path.join("results", "Validation", "validation_histogram", self.img_file))
+
     def equalization(self, CAL = False):
         height = self.OriginalImg.shape[0]
         width = self.OriginalImg.shape[1]
